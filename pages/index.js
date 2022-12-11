@@ -107,14 +107,19 @@ import Link from 'next/link';
 
 // export default Home
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
 // const items1 = ['1', '2', '3'].map((key) => ({
 //   key,
 //   label: `nav ${key}`,
 // }));
 import { Select } from 'antd';
-const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+
+const App = () => {
+  const [selectedItems, setSelectedItems] = useState([]);
+  const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+  
 const items1 = [ 
   {
     label: (
@@ -157,12 +162,10 @@ const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, i
     }),
   };
 });
-const App = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const [selectedItems, setSelectedItems] = useState([]);
-  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
+  
   return (
     <Layout>
       <Header className="header">
@@ -174,15 +177,6 @@ const App = () => {
           padding: '0 50px',
         }}
       >
-        {/* <Breadcrumb
-          style={{
-            margin: '16px 0',
-          }}
-        >
-          <Breadcrumb.Item>Home</Breadcrumb.Item>
-          <Breadcrumb.Item>List</Breadcrumb.Item>
-          <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb> */}
         <Layout
           style={{
             padding: '24px 0',
@@ -203,6 +197,7 @@ const App = () => {
                 height: '100%',
               }}
               items={items2}
+              multiple='true'
             />
             {/* <Select
               mode="multiple"

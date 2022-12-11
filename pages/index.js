@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 // import Head from 'next/head'
 // import Image from 'next/image'
 // // import styles from '../styles/Home.module.css'
-// import Link from 'next/link';
+import Link from 'next/link';
 // import 'antd/dist/reset.css';
 // import { AppstoreOutlined, MailOutlined, SettingOutlined } from '@ant-design/icons';
 
@@ -109,10 +109,39 @@ import React, { useState } from 'react';
 import { LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import { Breadcrumb, Layout, Menu, theme } from 'antd';
 const { Header, Content, Footer, Sider } = Layout;
-const items1 = ['1', '2', '3'].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
+// const items1 = ['1', '2', '3'].map((key) => ({
+//   key,
+//   label: `nav ${key}`,
+// }));
+import { Select } from 'antd';
+const OPTIONS = ['Apples', 'Nails', 'Bananas', 'Helicopters'];
+const items1 = [ 
+  {
+    label: (
+      <Link href="/movies" target="_blank">In trend</Link>
+    ),
+    key: 'alipay',
+    // icon: <MailOutlined />,
+  },
+  {
+    label: (
+      <Link href="/movies" target="_blank">Movies</Link>
+    ),
+    key: 'alipay',
+  },
+  {
+    label: (
+      <Link href="/movies" target="_blank">Series</Link>
+    ),
+    key: 'alipay',
+  },
+  {
+    label: (
+      <Link href="/search" target="_blank">Search</Link>
+    ),
+    key: 'alipay',
+  },
+];
 const items2 = [UserOutlined, LaptopOutlined, NotificationOutlined].map((icon, index) => {
   const key = String(index + 1);
   return {
@@ -132,6 +161,8 @@ const App = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
+  const [selectedItems, setSelectedItems] = useState([]);
+  const filteredOptions = OPTIONS.filter((o) => !selectedItems.includes(o));
   return (
     <Layout>
       <Header className="header">
@@ -143,7 +174,7 @@ const App = () => {
           padding: '0 50px',
         }}
       >
-        <Breadcrumb
+        {/* <Breadcrumb
           style={{
             margin: '16px 0',
           }}
@@ -151,7 +182,7 @@ const App = () => {
           <Breadcrumb.Item>Home</Breadcrumb.Item>
           <Breadcrumb.Item>List</Breadcrumb.Item>
           <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
+        </Breadcrumb> */}
         <Layout
           style={{
             padding: '24px 0',
@@ -173,6 +204,19 @@ const App = () => {
               }}
               items={items2}
             />
+            {/* <Select
+              mode="multiple"
+              placeholder="Inserted are removed"
+              value={selectedItems}
+              onChange={setSelectedItems}
+              style={{
+                width: '100%',
+              }}
+              options={filteredOptions.map((item) => ({
+                value: item,
+                label: item,
+              }))}
+            /> */}
           </Sider>
           <Content
             style={{

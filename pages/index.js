@@ -10,10 +10,10 @@ import { Card } from 'antd';
 import { Col, Row } from 'antd';
 import axios from "axios";
 import ShowDetailsModal from '../components/ShowDetailsModal'
+import { Layout, Menu, theme, Pagination } from 'antd';
 
+const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
-import { Layout, Menu, theme, Pagination, Modal } from 'antd';
-const { Header, Content, Footer,  } = Layout;
 
 // const Home = ({ trendingData }) => {
 const Home = () => {
@@ -26,7 +26,7 @@ const Home = () => {
   const [showModal, setShowModal] = useState(false);
   const [activeItemData, setActiveItemData] = useState(null);
 
-  const items1 = [ 
+  const links = [ 
     {
       label: (
         <Link href="/" target="_blank">In trend</Link>
@@ -82,11 +82,11 @@ const Home = () => {
 
   useEffect(() => {
     getTrendingData(page)
-    console.log(trendingData)
+    // console.log('here')
   }, [page]);
 
   const onPaginationChange = (current) => {
-    console.log('cut', current)
+    // console.log('cut', current)
     setPage(current)
   };
 
@@ -103,7 +103,7 @@ const Home = () => {
     // />
 
     <ShowDetailsModal
-    open={showModal}
+      open={showModal}
       // data={activePictureData}
       // onFormChange={handleChange}
       // onFormSubmit={handleSubmit}
@@ -111,6 +111,7 @@ const Home = () => {
       onCancel={handleCloseModal}
     />
   );
+  
   const handleCloseModal = () => {
     setShowModal(false);
   };
@@ -124,7 +125,7 @@ const Home = () => {
       </Head>
       <Header className="header">
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items1} />
+        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={links} />
       </Header>
       <Content
         style={{
@@ -154,8 +155,7 @@ const Home = () => {
             >
               {trendingData.map((el) => (
               <Col className="gutter-row" span={6} key = {el.id}>
-                <Card
-                  
+                <Card                  
                   hoverable
                   style={{ width: 200 }}
                   cover={<Image src={`${baseImagePath}${el.poster_path}`} alt="Vercel Logo" width={200} height={300} />}
@@ -168,17 +168,13 @@ const Home = () => {
             </Row>
             {renderModal()}
             <Pagination defaultCurrent={1}
-             current ={page} total={100} showSizeChanger={false}
-             onChange={onPaginationChange} />
-
+              current ={page} total={100} showSizeChanger={false}
+              onChange={onPaginationChange}
+              style={{textAlign: 'center'}} />
           </Content>
         </Layout>
       </Content>
-      <Footer
-        style={{
-          textAlign: 'center',
-        }}
-      >
+      <Footer style={{textAlign: 'center'}}>
         Cinema ©2022 Created by pavl1k
       </Footer>
     </Layout>

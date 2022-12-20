@@ -14,6 +14,8 @@ import { Layout, Menu, theme, Pagination } from 'antd';
 
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
+
 
 // const Home = ({ trendingData }) => {
 const Home = () => {
@@ -66,6 +68,17 @@ const Home = () => {
   }
 
   const openCard = async (id) => {
+    let mediaObj = trendingData.filter((el) => el.id === id)[0];
+    const videosUrl = `https://api.themoviedb.org/3/${mediaObj.media_type}/${mediaObj.id}/videos?api_key=6e5ea66aa145c5494dd12c5604e4f89a`
+    const res = await axios.get(videosUrl)
+    console.log(videosUrl)
+    console.log(res.data)
+    const videoLink = res.data.results[0].key;
+    mediaObj = { ...mediaObj, videoLink };
+
+    setActiveItemData(mediaObj);
+
+
     // const uri = baseUrl + (id ? `/${id}` : '');
     // try {
       // const res = await axios.get(uri);
@@ -93,27 +106,18 @@ const Home = () => {
   const handleClick = (id) => () => openCard(id);
 
   const renderModal = () => (
-    // activePictureData && <MyModal
-    //   show={showModal}
-    //   data={activePictureData}
-    //   onFormChange={handleChange}
-    //   onFormSubmit={handleSubmit}
-    //   formData={form}
-    //   onHide={handleCloseModal}
-    // />
-
-    <ShowDetailsModal
+    activeItemData && <ShowDetailsModal
       open={showModal}
-      // data={activePictureData}
+      data={activeItemData}
       // onFormChange={handleChange}
       // onFormSubmit={handleSubmit}
       // formData={form}
       onCancel={handleCloseModal}
-    />
-  );
+  />);
   
   const handleCloseModal = () => {
     setShowModal(false);
+    setActiveItemData(null); //?
   };
   
   return (

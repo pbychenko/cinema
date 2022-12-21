@@ -69,12 +69,16 @@ const Home = () => {
 
   const openCard = async (id) => {
     let mediaObj = trendingData.filter((el) => el.id === id)[0];
-    const videosUrl = `https://api.themoviedb.org/3/${mediaObj.media_type}/${mediaObj.id}/videos?api_key=6e5ea66aa145c5494dd12c5604e4f89a`
-    const res = await axios.get(videosUrl)
-    console.log(videosUrl)
-    console.log(res.data)
-    const videoLink = res.data.results[0].key;
-    mediaObj = { ...mediaObj, videoLink };
+    const videosUrl = `https://api.themoviedb.org/3/${mediaObj.media_type}/${mediaObj.id}/videos?api_key=6e5ea66aa145c5494dd12c5604e4f89a`;
+    const acrotrsUrl = `https://api.themoviedb.org/3/${mediaObj.media_type}/${mediaObj.id}/credits?api_key=6e5ea66aa145c5494dd12c5604e4f89a`;
+    const videoRes = await axios.get(videosUrl);
+    const actorsRes = await axios.get(acrotrsUrl);
+    // console.log(videosUrl)
+    // console.log(videoRes.data)
+    const videoLink = videoRes.data.results[0].key;
+    const acrotrsData = actorsRes.data.cast.slice(0, 10);
+    console.log(acrotrsData)
+    mediaObj = { ...mediaObj, videoLink, acrotrsData };
 
     setActiveItemData(mediaObj);
 

@@ -16,7 +16,8 @@ const carouselSettings = {
   swipeToSlide: true,
   draggable: true,
   slidesToShow: 3,
-  slidesToScroll: 1
+  slidesToScroll: 1,
+  variableWidth: true
 };
 
 const ShowDetailsModal = ({open, onCancel, data}) => {
@@ -50,22 +51,13 @@ const ShowDetailsModal = ({open, onCancel, data}) => {
                   // nextArrow={<Icon className="ant-carousel slick-next" style={style}><RightOutlined /></Icon>}
                 >{data.acrotrsData.map((el) => (
                   <Card
-                    key={el.id}                  
+                    key={el.id}
                     hoverable
-                    cover={<Image src={`${baseImageActorsPath}${el.profile_path}`} alt="Vercel Logo" width={200} height={300}/>}
+                    style={{ width: 150 }}
+                    cover={<Image src={`${baseImageActorsPath}${el.profile_path}`} alt="Vercel Logo" width={150} height={200}/>}
                   >                  
-                    <Meta title={el.name}/>
-                    {/* <span>{el.media_type} {el.release_date || el.first_air_date }</span> */}
+                    <p> {el.name}</p>
                   </Card>))}
-                  <div>
-                    <h3>2</h3>
-                  </div>
-                  <div>
-                    <h3>3</h3>
-                  </div>
-                  <div>
-                    <h3>4</h3>
-                  </div>
                 </Carousel>
              </Col>
           </Row>

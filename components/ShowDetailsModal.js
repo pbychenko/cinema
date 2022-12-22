@@ -2,14 +2,14 @@ import { Modal, Layout, Row, Col } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Carousel, Card } from "antd";
+import routes from '../routes';
 // import Icon, { RightOutlined, LeftOutlined} from '@ant-design/icons';
 
 // const Arrow = ({ type, style, className, onClick }) => (
 //   <Icon type={type} style={style} className={className} onClick={onClick} />
 // );
 const { Meta } = Card;
-const baseImagePath = 'https://image.tmdb.org/t/p/w400';
-const baseImageActorsPath = 'https://image.tmdb.org/t/p/w200';
+
 const { Content } = Layout;
 const carouselSettings = {
   // arrows: true,
@@ -24,7 +24,7 @@ const carouselSettings = {
 
 const ShowDetailsModal = ({open, onCancel, data}) => {
   // console.log(data.videoLink)
-  console.log(data.acrotrsData)
+  // console.log(data.acrotrsData)
 
   return (
     <Modal
@@ -41,12 +41,12 @@ const ShowDetailsModal = ({open, onCancel, data}) => {
         <Content>
           <Row >
              <Col className="gutter-row" span={8}>
-               <Image src={`${baseImagePath}${data.poster_path}`} alt="Vercel Logo" width={400} height={600}  />
+               <Image src={routes.getImagePath(400, data.poster_path)} alt="Vercel Logo" width={400} height={600}  />
             </Col>
              <Col className="gutter-row" span={16}>
                 <h1>{data.title || data.name}</h1>
                 <p>{data.overview}</p>
-                <Link href={`https://youtu.be/${data.videoLink}`} target="_blank">Watch Trailer</Link>
+                <Link href={routes.getVideoLinkPath(data.videoLink)} target="_blank">Watch Trailer</Link>
                 <Carousel
                   {...carouselSettings}
                   // prevArrow={<Button transparentclassName="ant-carousel slick-prev"><Image src={`${baseImagePath}${data.poster_path}`} alt="Vercel Logo" width={15} height={15} /></Button>}
@@ -56,7 +56,7 @@ const ShowDetailsModal = ({open, onCancel, data}) => {
                     key={el.id}
                     hoverable
                     style={{ width: 150 }}
-                    cover={<Image src={`${baseImageActorsPath}${el.profile_path}`} alt="Vercel Logo" width={150} height={200}/>}
+                    cover={<Image src={routes.getImagePath(200, el.profile_path)} alt="Vercel Logo" width={150} height={200}/>}
                   >                  
                     <p> {el.name}</p>
                   </Card>))}

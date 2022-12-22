@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // import { getTrendingData } from '../api';
-import Head from 'next/head'
-import Image from 'next/image'
+import Head from 'next/head';
+import Image from 'next/image';
 // import styles from '../styles/Home.module.css'
 // import { AppstoreOutlined, MailOutlined, SettingOutlined, LaptopOutlined, NotificationOutlined, UserOutlined } from '@ant-design/icons';
 import Link from 'next/link';
@@ -11,6 +11,7 @@ import { Col, Row } from 'antd';
 import axios from "axios";
 import ShowDetailsModal from '../components/ShowDetailsModal'
 import { Layout, Menu, theme, Pagination } from 'antd';
+import routes from '../routes';
 
 const { Header, Content, Footer } = Layout;
 const { Meta } = Card;
@@ -59,18 +60,17 @@ const Home = () => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-  const baseImagePath = 'https://image.tmdb.org/t/p/w200'
 
   const getTrendingData = async (pageNumber = 1) => {
-    const res = await axios.get(`https://api.themoviedb.org/3/trending/all/day?api_key=6e5ea66aa145c5494dd12c5604e4f89a&page=${pageNumber}`)
-    // console.log('f', res.data)
-    setTrendingData((prev) => res.data.results);
+    const trendsUrl = routes.getTrendingPath(pageNumber);
+    const res = await axios.get(trendsUrl);
+    setTrendingData(() => res.data.results);
   }
 
   const openCard = async (id) => {
     let mediaObj = trendingData.filter((el) => el.id === id)[0];
-    const videosUrl = `https://api.themoviedb.org/3/${mediaObj.media_type}/${mediaObj.id}/videos?api_key=6e5ea66aa145c5494dd12c5604e4f89a`;
-    const acrotrsUrl = `https://api.themoviedb.org/3/${mediaObj.media_type}/${mediaObj.id}/credits?api_key=6e5ea66aa145c5494dd12c5604e4f89a`;
+    const videosUrl = routes.getVideosPath(mediaObj.media_type, id);
+    const acrotrsUrl = routes.getActorsPath(mediaObj.media_type, id);
     const videoRes = await axios.get(videosUrl);
     const actorsRes = await axios.get(acrotrsUrl);
     // console.log(videosUrl)
@@ -166,7 +166,7 @@ const Home = () => {
                 <Card                  
                   hoverable
                   style={{ width: 200 }}
-                  cover={<Image src={`${baseImagePath}${el.poster_path}`} alt="Vercel Logo" width={200} height={300} />}
+                  cover={<Image src={routes.getImagePath(200,el.poster_path)} alt="Vercel Logo" width={200} height={300} />}
                   onClick={handleClick(el.id)}
                 >                  
                   <Meta title={el.title || el.name}/>

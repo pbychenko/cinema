@@ -17,7 +17,9 @@ const carouselSettings = {
   draggable: true,
   slidesToShow: 3,
   slidesToScroll: 1,
-  variableWidth: true
+  variableWidth: true, 
+  autoplay: true,
+  autoplaySpeed: 1000
 };
 
 const ShowDetailsModal = ({open, onCancel, data}) => {

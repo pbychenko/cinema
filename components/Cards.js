@@ -1,13 +1,30 @@
 import { Layout, Row, Col, Card, Pagination } from 'antd';
 import Image from 'next/image';
 import routes from '../routes';
+// import axios from "axios";
+
+// import React, { useState, useEffect } from 'react';
+
 const { Meta } = Card;
 
 const { Content } = Layout;
 
-const Cards = ({trendingData, handleClick, onPaginationChange}) => {
-  // console.log(data.videoLink)
-  // console.log(data.acrotrsData)
+const Cards = ({trendingData, handleClick, onPaginationChange, page}) => {
+  // const [page, setPage] = useState(1);
+  // const [trendingData, setTrendingData] = useState(data);
+  console.log('here')
+
+  // const getTrendingData = async(pageNumber) => {
+  //   const trendsUrl = routes.getTrendingPath(pageNumber);
+  //   const res = await axios.get(trendsUrl); 
+  //   // console.log('in getTrendingData')
+  //   setTrendingData(() => res.data.results);    
+  // }
+
+  // const onPaginationChange = async(current) => {
+  //   setPage(current);
+  //   await getTrendingData(current);
+  // };
 
   return (
     <Content

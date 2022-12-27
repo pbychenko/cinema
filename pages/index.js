@@ -102,7 +102,7 @@ const Home = ({data}) => {
             background: colorBgContainer,
           }}
         >
-          <Cards trendingData={trendingData} handleClick={handleClick} onPaginationChange={onPaginationChange} page={page} />
+          <Cards data={trendingData} handleClick={handleClick} onPaginationChange={onPaginationChange} page={page} />
           {renderModal()}
         </Layout>
       </Content>

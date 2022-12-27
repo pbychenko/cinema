@@ -9,7 +9,7 @@ const { Meta } = Card;
 
 const { Content } = Layout;
 
-const Cards = ({trendingData, handleClick, onPaginationChange, page}) => {
+const Cards = ({data, handleClick, onPaginationChange, page}) => {
   // const [page, setPage] = useState(1);
   // const [trendingData, setTrendingData] = useState(data);
   console.log('here')
@@ -42,7 +42,7 @@ const Cards = ({trendingData, handleClick, onPaginationChange, page}) => {
           lg: 32,
         }}
       >
-        {trendingData.map((el) => (
+        {data.map((el) => (
         <Col className="gutter-row" span={6} key = {el.id}>
           <Card                  
             hoverable

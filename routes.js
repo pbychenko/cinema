@@ -1,4 +1,7 @@
-const apiKey = '6e5ea66aa145c5494dd12c5604e4f89a';
+const apiKey = process.env.API_KEY;
+// const apiKey = '6e5ea66aa145c5494dd12c5604e4f89a'
+// console.log('in routes', process.env.API_KEY)
+// console.log('in routes2', apiKey)
 const apiHost = 'https://api.themoviedb.org/3';
 const baseImagePath = 'https://image.tmdb.org/t/p';
 const baseVideoPath = 'https://youtu.be';

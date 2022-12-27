@@ -11,6 +11,9 @@ const nextConfig = {
       },
     ],
   },
+  env: {
+    API_KEY: '6e5ea66aa145c5494dd12c5604e4f89a',
+  },
 }
 
 module.exports = nextConfig

@@ -119,7 +119,7 @@ const App = () => {
 const items1 = [ 
   {
     label: (
-      <Link href="/movies" target="_blank">In trend</Link>
+      <Link href="/" target="_blank">In trend</Link>
     ),
     key: 'alipay',
     // icon: <MailOutlined />,

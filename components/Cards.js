@@ -11,21 +11,9 @@ const { Meta } = Card;
 const { Content } = Layout;
 
 const Cards = ({data, onPaginationChange, page}) => {
-  // const [internalData, setInternalData] = useState(data);
   const [activeItemData, setActiveItemData] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
-  // const getTrendingData = async(pageNumber) => {
-  //   const trendsUrl = routes.getTrendingPath(pageNumber);
-  //   const res = await axios.get(trendsUrl); 
-  //   // console.log('in getTrendingData')
-  //   setTrendingData(() => res.data.results);    
-  // }
-
-  // const onPaginationChange = async(current) => {
-  //   setPage(current);
-  //   await getTrendingData(current);
-  // };
   const openCard = async (id) => {
     let mediaObj = data.filter((el) => el.id === id)[0];
     const videosUrl = routes.getVideosPath(mediaObj.media_type, id);

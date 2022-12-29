@@ -30,10 +30,8 @@ const SearchPage = () => {
 
 
   const onSearch = async(value) => {
-    console.log(value)
     setSearchInput(() => value);
-    console.log('input', searchInput)
-    // await getSearchResultsData(page);
+    console.log('input', searchInput);
   }
 
   const onTabChange = (key) => {
@@ -57,28 +55,7 @@ const SearchPage = () => {
     const searchTvResultsRes = await axios.get(searchTvResultsUrl); 
     setSearchResultsTvData(() => searchTvResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'tv' })));
     console.log('stop') 
-  }
-
-  // const openCard = async (id) => {
-  //   let mediaObj = trendingData.filter((el) => el.id === id)[0];
-  //   const videosUrl = routes.getVideosPath(mediaObj.media_type, id);
-  //   const actorsUrl = routes.getActorsPath(mediaObj.media_type, id);
-  //   const videoRes = await axios.get(videosUrl);
-  //   const actorsRes = await axios.get(actorsUrl);
-  //   const videoLink = videoRes.data.results[0].key;
-  //   const actorsData = actorsRes.data.cast.slice(0, 10);
-  //   mediaObj = { ...mediaObj, videoLink, acrotrsData: actorsData };
-
-  //   setActiveItemData(mediaObj);
-  //   // try {
-  //     // const res = await axios.get(uri);
-  //     // setActivePictureData(res.data);
-  //     setShowModal(true);
-  //   // } catch (error) {
-  //   //   setShowErrorBlock(true);
-  //   //   throw error;
-  //   // }   
-  // };
+  };
 
   useEffect(() => {
     getSearchMovieResultsData(moviePage)
@@ -147,7 +124,6 @@ const SearchPage = () => {
                 children: (<Cards data={searchResultsTvData} onPaginationChange={onTvPaginationChange} page={tvPage} />),
               }]}
           />
-          {/* {renderModal()} */}
         </Layout>
       </Content>
       <Footer style={{textAlign: 'center'}}>

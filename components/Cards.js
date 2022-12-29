@@ -93,7 +93,7 @@ const Cards = ({data, onPaginationChange, page}) => {
       <Pagination
         current={page}
         onChange={onPaginationChange}
-        total={data.length}
+        total={50}
         style={{textAlign: 'center'}} />
       {renderModal()}
     </Content>)

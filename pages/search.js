@@ -15,10 +15,11 @@ const { Search } = Input;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const SearchPage = () => {
-  const [page, setPage] = useState(1);
+  const [moviePage, setMoviePage] = useState(1);
+  const [tvPage, setTvPage] = useState(1);
   const [searchResultsMovieData, setSearchResultsMovieData] = useState([]);
   const [searchResultsTvData, setSearchResultsTvData] = useState([]);
-  const [activeTab, setActiveTab] = useState('tv');
+  const [activeTab, setActiveTab] = useState('movie');
   const [searchInput, setSearchInput] = useState('');
   // const [load, setLoad] = useState(false);
   // const [showError, setShowError] = useState(false);
@@ -27,11 +28,12 @@ const SearchPage = () => {
     token: { colorBgContainer },
   } = theme.useToken();
 
+
   const onSearch = async(value) => {
     console.log(value)
-    setSearchInput((prev) => value);
-    console.log('searchInput', searchInput)
-    await getSearchResultsData(page, value);
+    setSearchInput(() => value);
+    console.log('input', searchInput)
+    // await getSearchResultsData(page);
   }
 
   const onTabChange = (key) => {
@@ -39,17 +41,22 @@ const SearchPage = () => {
     setActiveTab(key)
   }
 
-  const getSearchResultsData = async(pageNumber, s) => {
-    const searchMovieResultsUrl = routes.getSearchResults('movie', s, pageNumber);
+  const getSearchMovieResultsData = async(pageNumber) => {
+    console.log('start')
+    if (searchInput === '') return;
+    const searchMovieResultsUrl = routes.getSearchResults('movie', searchInput, pageNumber);
     const searchMovieResultsRes = await axios.get(searchMovieResultsUrl);
-
     setSearchResultsMovieData(() => searchMovieResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
-    // console.log(searchResultsMovieData)
+    console.log('stop') 
+  }
 
-    const searchTvResultsUrl = routes.getSearchResults('tv', s, pageNumber);
+  const getSearchTvResultsData = async(pageNumber) => {
+    console.log('start')
+    if (searchInput === '') return;
+    const searchTvResultsUrl = routes.getSearchResults('tv', searchInput, pageNumber);
     const searchTvResultsRes = await axios.get(searchTvResultsUrl); 
     setSearchResultsTvData(() => searchTvResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'tv' })));
-    // console.log('here') 
+    console.log('stop') 
   }
 
   // const openCard = async (id) => {
@@ -73,15 +80,23 @@ const SearchPage = () => {
   //   // }   
   // };
 
-  // useEffect(() => {
-  //   console.log('here')
-  //   getTrendingData(page)
-  //   // console.log('here')
-  // }, [page]);
+  useEffect(() => {
+    getSearchMovieResultsData(moviePage)
+    console.log('here')
+  }, [searchInput, moviePage]);
 
-  const onPaginationChange = async(current) => {
-    setPage(current);
-    await getTrendingData(current);
+  useEffect(() => {
+    getSearchTvResultsData(tvPage)
+    console.log('here')
+  }, [searchInput, tvPage]);
+
+  const onMoviePaginationChange = (current) => {
+    setMoviePage(current);
+  };
+
+  const onTvPaginationChange = (current) => {
+    console.log('jee')
+    setTvPage(current);
   };
   
   return (
@@ -124,12 +139,12 @@ const SearchPage = () => {
               {
                 label: (<span><AppleOutlined />Movies</span>),
                 key: 'movie',
-                children: (<Cards data={searchResultsMovieData} onPaginationChange={onPaginationChange} page={page} />),
+                children: (<Cards data={searchResultsMovieData} onPaginationChange={onMoviePaginationChange} page={moviePage} />),
               },
               {
                 label: (<span><AndroidOutlined />TV</span>),
                 key: 'tv',
-                children: (<Cards data={searchResultsTvData} onPaginationChange={onPaginationChange} page={page} />),
+                children: (<Cards data={searchResultsTvData} onPaginationChange={onTvPaginationChange} page={tvPage} />),
               }]}
           />
           {/* {renderModal()} */}

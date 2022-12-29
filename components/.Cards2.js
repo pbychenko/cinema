@@ -1,19 +1,16 @@
 import { Layout, Row, Col, Card, Pagination } from 'antd';
 import Image from 'next/image';
 import routes from '../routes';
-import ShowDetailsModal from './ShowDetailsModal';
-import axios from "axios";
+// import axios from "axios";
 
-import React, { useState, useEffect } from 'react';
+// import React, { useState, useEffect } from 'react';
 
 const { Meta } = Card;
 
 const { Content } = Layout;
 
 const Cards = ({data, onPaginationChange, page}) => {
-  // const [internalData, setInternalData] = useState(data);
-  const [activeItemData, setActiveItemData] = useState(null);
-  const [showModal, setShowModal] = useState(false);
+  const [internalData, setInterData] = useState(data);
 
   // const getTrendingData = async(pageNumber) => {
   //   const trendsUrl = routes.getTrendingPath(pageNumber);
@@ -26,8 +23,8 @@ const Cards = ({data, onPaginationChange, page}) => {
   //   setPage(current);
   //   await getTrendingData(current);
   // };
-  const openCard = async (id) => {
-    let mediaObj = data.filter((el) => el.id === id)[0];
+  const openCard = async (id, mediaType) => {
+    let mediaObj = trendingData.filter((el) => el.id === id)[0];
     const videosUrl = routes.getVideosPath(mediaObj.media_type, id);
     const acrotrsUrl = routes.getActorsPath(mediaObj.media_type, id);
     const videoRes = await axios.get(videosUrl);
@@ -49,17 +46,17 @@ const Cards = ({data, onPaginationChange, page}) => {
 
   const handleClick = (id) => () => openCard(id);
 
-  const renderModal = () => (
-    activeItemData && <ShowDetailsModal
-      open={showModal}
-      data={activeItemData}
-      onCancel={handleCloseModal}
-  />);
+  // const renderModal = () => (
+  //   activeItemData && <ShowDetailsModal
+  //     open={showModal}
+  //     data={activeItemData}
+  //     onCancel={handleCloseModal}
+  // />);
   
-  const handleCloseModal = () => {
-    setShowModal(false);
-    setActiveItemData(null); //?
-  };
+  // const handleCloseModal = () => {
+  //   setShowModal(false);
+  //   setActiveItemData(null); //?
+  // };
 
   return (
     <Content
@@ -93,9 +90,8 @@ const Cards = ({data, onPaginationChange, page}) => {
       <Pagination
         current={page}
         onChange={onPaginationChange}
-        total={data.length}
+        total={50}
         style={{textAlign: 'center'}} />
-      {renderModal()}
     </Content>)
 };
 

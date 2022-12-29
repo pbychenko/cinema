@@ -12,6 +12,7 @@ const routes = {
   getVideosPath: (mediaType, id) => `${apiHost}/${mediaType}/${id}/videos?api_key=${apiKey}`,
   getActorsPath: (mediaType, id) => `${apiHost}/${mediaType}/${id}/credits?api_key=${apiKey}`,
   getTrendingPath: (pageNumber) => `${apiHost}/trending/all/day?api_key=${apiKey}&page=${pageNumber}`,
+  getSearchResults: (mediaType, query, pageNumber) => `${apiHost}/search/${mediaType}?api_key=${apiKey}&query=${query}&page=${pageNumber}`,
 };
 
 export default routes;

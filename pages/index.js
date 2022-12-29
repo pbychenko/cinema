@@ -5,7 +5,7 @@ import 'antd/dist/reset.css';
 import axios from "axios";
 import ShowDetailsModal from '../components/ShowDetailsModal';
 import CustomHeader from '../components/CustomHeader';
-import Cards from '../components/Cards';
+import Cards from '../components/.Cards2';
 import { Layout, theme, Spin } from 'antd';
 import routes from '../routes';
 

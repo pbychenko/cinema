@@ -108,9 +108,7 @@ const SearchPage = () => {
           />
           <Tabs
             defaultActiveKey={activeTab}
-            style={{
-              margin: 'auto'
-            }}
+            centered
             onChange={onTabChange}
             items={[
               {

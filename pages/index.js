@@ -26,7 +26,7 @@ const Home = ({data}) => {
     const trendsUrl = routes.getTrendingPath(pageNumber);
     const res = await axios.get(trendsUrl); 
     setTrendingData(() => res.data.results);
-    console.log('here') 
+    console.log('getTrendingData') 
   }
 
   // useEffect(() => {
@@ -75,6 +75,7 @@ const Home = ({data}) => {
 export default Home;
 
 export async function getStaticProps() {
+  console.log('ssr')
   const trendsUrl = routes.getTrendingPath(1);
   const res = await axios.get(trendsUrl);
   const data = res.data.results;

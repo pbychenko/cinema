@@ -40,12 +40,12 @@ const SearchPage = () => {
   }
 
   const getSearchMovieResultsData = async(pageNumber) => {
-    console.log('start')
+    console.log('start Movie')
     if (searchInput === '') return;
     const searchMovieResultsUrl = routes.getSearchResults('movie', searchInput, pageNumber);
     const searchMovieResultsRes = await axios.get(searchMovieResultsUrl);
     setSearchResultsMovieData(() => searchMovieResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
-    console.log('stop') 
+    console.log('stop')
   }
 
   const getSearchTvResultsData = async(pageNumber) => {
@@ -59,12 +59,12 @@ const SearchPage = () => {
 
   useEffect(() => {
     getSearchMovieResultsData(moviePage)
-    console.log('here')
+    console.log('in useef1')
   }, [searchInput, moviePage]);
 
   useEffect(() => {
     getSearchTvResultsData(tvPage)
-    console.log('here')
+    console.log('in useef2')
   }, [searchInput, tvPage]);
 
   const onMoviePaginationChange = (current) => {

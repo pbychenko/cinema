@@ -16,7 +16,8 @@ const Series = ({genres}) => {
   const [page, setPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [tvData, setTvData] = useState([])
-
+  
+  console.log(selectedGenres)
   const filters = [UserOutlined].map((icon, index) => {
     return {
       key: `genres`,

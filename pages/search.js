@@ -42,7 +42,7 @@ const SearchPage = () => {
   const getSearchMovieResultsData = async(pageNumber) => {
     console.log('start Movie')
     if (searchInput === '') return;
-    const searchMovieResultsUrl = routes.getSearchResults('movie', searchInput, pageNumber);
+    const searchMovieResultsUrl = routes.getSearchResultsPath('movie', searchInput, pageNumber);
     const searchMovieResultsRes = await axios.get(searchMovieResultsUrl);
     setSearchResultsMovieData(() => searchMovieResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
     console.log('stop')
@@ -51,7 +51,7 @@ const SearchPage = () => {
   const getSearchTvResultsData = async(pageNumber) => {
     console.log('start')
     if (searchInput === '') return;
-    const searchTvResultsUrl = routes.getSearchResults('tv', searchInput, pageNumber);
+    const searchTvResultsUrl = routes.getSearchResultsPath('tv', searchInput, pageNumber);
     const searchTvResultsRes = await axios.get(searchTvResultsUrl); 
     setSearchResultsTvData(() => searchTvResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'tv' })));
     console.log('stop') 

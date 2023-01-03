@@ -14,6 +14,7 @@ const Cards = ({data, onPaginationChange, page}) => {
   const [showModal, setShowModal] = useState(false);
 
   const openCard = async (id) => {
+    console.log(id)
     let mediaObj = data.filter((el) => el.id === id)[0];
     const videosUrl = routes.getVideosPath(mediaObj.media_type, id);
     const acrotrsUrl = routes.getActorsPath(mediaObj.media_type, id);
@@ -22,6 +23,7 @@ const Cards = ({data, onPaginationChange, page}) => {
     const videoLink = videoRes.data.results[0].key;
     const acrotrsData = actorsRes.data.cast.slice(0, 10);
     mediaObj = { ...mediaObj, videoLink, acrotrsData };
+    console.log(mediaObj)
 
     setActiveItemData(mediaObj);
     // try {
@@ -51,7 +53,7 @@ const Cards = ({data, onPaginationChange, page}) => {
   return (
     <Content
       style={{
-        padding: '0 300px',
+        padding: '0 100px',
         minHeight: 280,          
       }}
     >

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {UserOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Pagination } from 'antd';
 const { Content, Footer, Sider } = Layout;
 import Head from 'next/head';
 import 'antd/dist/reset.css';
@@ -15,7 +15,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const Movies = ({genres}) => {
   const [page, setPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [moviesData, setMoviesData] = useState([])
+  const [moviesData, setMoviesData] = useState([]);
+  const [totalMoviesResult, setTotalMoviesResult] = useState(0)
 
   const filters = [UserOutlined].map((icon, index) => {
     return {
@@ -32,6 +33,8 @@ const Movies = ({genres}) => {
     const res = await axios.get(moviesUrl);
     // console.log(res)
     setMoviesData(() => res.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
+    console.log(res.data.total_results)
+    setTotalMoviesResult(res.data.total_results);
   }
   
   const {
@@ -102,7 +105,13 @@ const Movies = ({genres}) => {
             }}
           >
             {/* {moviesData ? (<Cards data={moviesData} onPaginationChange={onPaginationChange} page={page} /> ) : null} */}
-            <Cards data={moviesData} onPaginationChange={onPaginationChange} page={page} />
+            <Cards data={moviesData} />
+            <Pagination
+              current={page}
+              onChange={onPaginationChange}
+              total={totalMoviesResult}
+              pageSize = {20}
+              style={{textAlign: 'center'}} />
                        
           </Content>
         </Layout>

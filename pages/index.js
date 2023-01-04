@@ -5,7 +5,7 @@ import 'antd/dist/reset.css';
 import axios from "axios";
 import CustomHeader from '../components/CustomHeader';
 import Cards from '../components/Cards';
-import { Layout, theme, Spin } from 'antd';
+import { Layout, theme, Spin, Pagination } from 'antd';
 import routes from '../routes';
 
 const { Content, Footer } = Layout;
@@ -14,7 +14,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const Home = ({data}) => {
   const [page, setPage] = useState(1);
-  const [trendingData, setTrendingData] = useState(data);
+  const [trendingData, setTrendingData] = useState(data.results);
   // const [load, setLoad] = useState(false);
   // const [showError, setShowError] = useState(false);
 
@@ -62,7 +62,13 @@ const Home = ({data}) => {
             background: colorBgContainer,
           }}
         >
-          <Cards data={trendingData} onPaginationChange={onPaginationChange} page={page} />
+          <Cards data={trendingData} />
+          <Pagination
+            current={page}
+            onChange={onPaginationChange}
+            total={data.total_results}
+            pageSize = {20}
+            style={{textAlign: 'center'}} />
         </Layout>
       </Content>
       <Footer style={{textAlign: 'center'}}>
@@ -78,7 +84,7 @@ export async function getStaticProps() {
   console.log('ssr')
   const trendsUrl = routes.getTrendingPath(1);
   const res = await axios.get(trendsUrl);
-  const data = res.data.results;
+  const data = res.data;
   return {
     props: {
       data

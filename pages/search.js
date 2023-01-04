@@ -5,7 +5,7 @@ import 'antd/dist/reset.css';
 import axios from "axios";
 import CustomHeader from '../components/CustomHeader';
 import Cards from '../components/Cards';
-import { Layout, theme, Spin, Input, Tabs } from 'antd';
+import { Layout, theme, Spin, Input, Tabs, Pagination } from 'antd';
 import routes from '../routes';
 import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 
@@ -19,6 +19,8 @@ const SearchPage = () => {
   const [tvPage, setTvPage] = useState(1);
   const [searchResultsMovieData, setSearchResultsMovieData] = useState([]);
   const [searchResultsTvData, setSearchResultsTvData] = useState([]);
+  const [totalMovieResults, setTotalMovieResults] = useState(0);
+  const [totalTvResults, setTotalTvResults] = useState(0);
   const [activeTab, setActiveTab] = useState('movie');
   const [searchInput, setSearchInput] = useState('');
   // const [load, setLoad] = useState(false);
@@ -45,6 +47,7 @@ const SearchPage = () => {
     const searchMovieResultsUrl = routes.getSearchResultsPath('movie', searchInput, pageNumber);
     const searchMovieResultsRes = await axios.get(searchMovieResultsUrl);
     setSearchResultsMovieData(() => searchMovieResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
+    setTotalMovieResults(searchMovieResultsRes.data.total_results);
     console.log('stop')
   }
 
@@ -54,6 +57,7 @@ const SearchPage = () => {
     const searchTvResultsUrl = routes.getSearchResultsPath('tv', searchInput, pageNumber);
     const searchTvResultsRes = await axios.get(searchTvResultsUrl); 
     setSearchResultsTvData(() => searchTvResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'tv' })));
+    setTotalTvResults(searchTvResultsRes.data.total_results);
     console.log('stop') 
   };
 
@@ -114,12 +118,30 @@ const SearchPage = () => {
               {
                 label: (<span><AppleOutlined />Movies</span>),
                 key: 'movie',
-                children: (<Cards data={searchResultsMovieData} onPaginationChange={onMoviePaginationChange} page={moviePage} />),
+                children: (
+                 <>
+                  <Cards data={searchResultsMovieData} />
+                  <Pagination
+                    current={moviePage}
+                    onChange={onMoviePaginationChange}
+                    total={totalMovieResults}
+                    pageSize = {20}
+                    style={{textAlign: 'center'}} />
+                 </>),
               },
               {
                 label: (<span><AndroidOutlined />TV</span>),
                 key: 'tv',
-                children: (<Cards data={searchResultsTvData} onPaginationChange={onTvPaginationChange} page={tvPage} />),
+                children: (
+                  <>
+                  <Cards data={searchResultsTvData} />
+                  <Pagination
+                    current={tvPage}
+                    onChange={onTvPaginationChange}
+                    total={totalTvResults}
+                    pageSize = {20}
+                    style={{textAlign: 'center'}} />
+                  </>),
               }]}
           />
         </Layout>

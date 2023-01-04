@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {UserOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme } from 'antd';
+import { Layout, Menu, theme, Pagination } from 'antd';
 const { Content, Footer, Sider } = Layout;
 import Head from 'next/head';
 import 'antd/dist/reset.css';
@@ -15,7 +15,8 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 const Series = ({genres}) => {
   const [page, setPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
-  const [tvData, setTvData] = useState([])
+  const [tvData, setTvData] = useState([]);
+  const [totalResults, setTotalResults] = useState(0);
   
   console.log(selectedGenres)
   const filters = [UserOutlined].map((icon, index) => {
@@ -33,6 +34,7 @@ const Series = ({genres}) => {
     const res = await axios.get(tvUrl);
     // console.log(res)
     setTvData(() => res.data.results.map((el) => ({ ...el, 'media_type': 'tv' })));
+    setTotalResults(res.data.total_results);
   }
   
   const {
@@ -103,7 +105,13 @@ const Series = ({genres}) => {
             }}
           >
             {/* {moviesData ? (<Cards data={moviesData} onPaginationChange={onPaginationChange} page={page} /> ) : null} */}
-            <Cards data={tvData} onPaginationChange={onPaginationChange} page={page} />
+            <Cards data={tvData} />
+            <Pagination
+              current={page}
+              onChange={onPaginationChange}
+              total={totalResults}
+              pageSize = {20}
+              style={{textAlign: 'center'}} />
                        
           </Content>
         </Layout>

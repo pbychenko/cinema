@@ -9,7 +9,7 @@ import React, { useState, useEffect } from 'react';
 const { Meta } = Card;
 const { Content } = Layout;
 
-const Cards = ({data, onPaginationChange, page}) => {
+const Cards = ({data}) => {
   const [activeItemData, setActiveItemData] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -79,11 +79,6 @@ const Cards = ({data, onPaginationChange, page}) => {
           </Card>
         </Col>))}
       </Row>
-      <Pagination
-        current={page}
-        onChange={onPaginationChange}
-        total={50}
-        style={{textAlign: 'center'}} />
       {renderModal()}
     </Content>)
 };

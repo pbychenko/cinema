@@ -3,6 +3,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Carousel, Card } from "antd";
 import routes from '../routes';
+import styles from './ShowDetailsModal.module.css';
 // import Icon, { RightOutlined, LeftOutlined} from '@ant-design/icons';
 
 // const Arrow = ({ type, style, className, onClick }) => (
@@ -30,13 +31,10 @@ const ShowDetailsModal = ({open, onCancel, data}) => {
     <Modal
       // title={data.title || data.name}
       centered
-      style={{
-        top: 20,
-      }}
       open={open}
       onCancel={onCancel}
       footer={null}
-      width={1300}
+      className={styles.modalBlock}
     >
         <Content>
           <Row >
@@ -55,7 +53,7 @@ const ShowDetailsModal = ({open, onCancel, data}) => {
                   <Card
                     key={el.id}
                     hoverable
-                    style={{ width: 150 }}
+                    className={styles.card}
                     cover={<Image src={routes.getImagePath(200, el.profile_path)} alt="Vercel Logo" width={150} height={200}/>}
                   >                  
                     <p> {el.name}</p>

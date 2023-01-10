@@ -70,15 +70,10 @@ const Movies = ({genres}) => {
       </Head>
       <CustomHeader />
       <Content
-        style={{
-          padding: '0 50px',
-        }}
+        className='main-content'
       >
         <Layout
-          style={{
-            padding: '24px 0',
-            background: colorBgContainer,
-          }}
+          className='main-layout'
         >
           <Sider
             style={{
@@ -99,11 +94,7 @@ const Movies = ({genres}) => {
               onDeselect={onDeselect}
             />
           </Sider>
-          <Content
-            style={{
-              padding: '50px 15x'
-            }}
-          >
+          <Content>
             {/* {moviesData ? (<Cards data={moviesData} onPaginationChange={onPaginationChange} page={page} /> ) : null} */}
             <Cards data={moviesData} />
             <Pagination
@@ -111,12 +102,11 @@ const Movies = ({genres}) => {
               onChange={onPaginationChange}
               total={totalMoviesResult}
               pageSize = {20}
-              style={{textAlign: 'center'}} />
-                       
+              className='pagination' />                       
           </Content>
         </Layout>
       </Content>
-      <Footer style={{textAlign: 'center'}}>
+      <Footer>
         Cinema ©2022 Created by pavl1k
       </Footer>
     </Layout>

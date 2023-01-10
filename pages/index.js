@@ -52,15 +52,10 @@ const Home = ({data}) => {
         <div className="content" />
       </Spin> */}
        <Content
-        style={{
-          padding: '0 50px',
-        }}
+        className='main-content'
       >
         <Layout
-          style={{
-            padding: '24px 0',
-            background: colorBgContainer,
-          }}
+          className='main-layout'
         >
           <Cards data={trendingData} />
           <Pagination
@@ -68,11 +63,11 @@ const Home = ({data}) => {
             onChange={onPaginationChange}
             total={data.total_results}
             pageSize = {20}
-            style={{textAlign: 'center'}}
+            className='pagination'
              />
         </Layout>
       </Content>
-      <Footer style={{textAlign: 'center'}}>
+      <Footer>
         Cinema ©2022 Created by pavl1k
       </Footer>
     </Layout>

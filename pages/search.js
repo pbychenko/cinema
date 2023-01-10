@@ -92,23 +92,15 @@ const SearchPage = () => {
         <div className="content" />
       </Spin> */}
        <Content
-        style={{
-          padding: '0 50px',
-        }}
+        className='main-content'
       >
         <Layout
-          style={{
-            padding: '24px 0',
-            background: colorBgContainer,
-          }}
+          className='main-layout'
         >
           <Search
             placeholder="input search text"
             onSearch={onSearch}
-            style={{
-              width: 400,
-              margin: 'auto'
-            }}
+            className='search'
           />
           <Tabs
             defaultActiveKey={activeTab}
@@ -126,7 +118,7 @@ const SearchPage = () => {
                     onChange={onMoviePaginationChange}
                     total={totalMovieResults}
                     pageSize = {20}
-                    style={{textAlign: 'center'}} />
+                    className='pagination' />
                  </>),
               },
               {
@@ -140,13 +132,13 @@ const SearchPage = () => {
                     onChange={onTvPaginationChange}
                     total={totalTvResults}
                     pageSize = {20}
-                    style={{textAlign: 'center'}} />
+                    className='pagination' />
                   </>),
               }]}
           />
         </Layout>
       </Content>
-      <Footer style={{textAlign: 'center'}}>
+      <Footer>
         Cinema ©2022 Created by pavl1k
       </Footer>
     </Layout>

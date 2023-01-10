@@ -1,0 +1,8 @@
+.card {
+    max-width: 200px;
+}
+
+.contentCard {
+    padding: 0 100px;
+    min-height: 280px;
+}

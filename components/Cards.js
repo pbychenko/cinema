@@ -3,6 +3,7 @@ import Image from 'next/image';
 import routes from '../routes';
 import ShowDetailsModal from './ShowDetailsModal';
 import axios from "axios";
+import styles from './Cards.module.css';
 
 import React, { useState, useEffect } from 'react';
 
@@ -52,12 +53,8 @@ const Cards = ({data}) => {
 
   return (
     <Content
-      style={{
-        padding: '0 100px',
-        minHeight: 280,          
-      }}
-    >
-      
+      className={styles.contentCard}
+    >      
       <Row
         gutter={{
           xs: 8,
@@ -70,7 +67,7 @@ const Cards = ({data}) => {
         <Col className="gutter-row" span={6} key = {el.id}>
           <Card                  
             hoverable
-            style={{ width: 200 }}
+            className={styles.card}
             cover={<Image src={routes.getImagePath(200,el.poster_path)} alt="Vercel Logo" width={200} height={300} />}
             onClick={handleClick(el.id)}
           >                  

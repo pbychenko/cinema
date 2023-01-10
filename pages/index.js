@@ -68,7 +68,8 @@ const Home = ({data}) => {
             onChange={onPaginationChange}
             total={data.total_results}
             pageSize = {20}
-            style={{textAlign: 'center'}} />
+            style={{textAlign: 'center'}}
+             />
         </Layout>
       </Content>
       <Footer style={{textAlign: 'center'}}>

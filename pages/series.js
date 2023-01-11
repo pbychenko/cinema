@@ -69,16 +69,11 @@ const Series = ({genres}) => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <CustomHeader />
-      <Content
-        style={{
-          padding: '0 50px',
-        }}
+      <Content 
+        className='main-content'
       >
         <Layout
-          style={{
-            padding: '24px 0',
-            background: colorBgContainer,
-          }}
+          className='main-layout'
         >
           <Sider
             style={{
@@ -90,20 +85,13 @@ const Series = ({genres}) => {
               mode="inline"
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['genres']}
-              style={{
-                height: '100%',
-              }}
               items={filters}
               multiple='true'
               onSelect={onSelect}
               onDeselect={onDeselect}
             />
           </Sider>
-          <Content
-            style={{
-              padding: '50px 15x'
-            }}
-          >
+          <Content>
             {/* {moviesData ? (<Cards data={moviesData} onPaginationChange={onPaginationChange} page={page} /> ) : null} */}
             <Cards data={tvData} />
             <Pagination
@@ -111,12 +99,12 @@ const Series = ({genres}) => {
               onChange={onPaginationChange}
               total={totalResults}
               pageSize = {20}
-              style={{textAlign: 'center'}} />
+              className='pagination' />
                        
           </Content>
         </Layout>
       </Content>
-      <Footer style={{textAlign: 'center'}}>
+      <Footer>
         Cinema ©2022 Created by pavl1k
       </Footer>
     </Layout>

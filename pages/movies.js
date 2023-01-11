@@ -85,9 +85,6 @@ const Movies = ({genres}) => {
               mode="inline"
               defaultSelectedKeys={['1']}
               defaultOpenKeys={['genres']}
-              style={{
-                height: '100%',
-              }}
               items={filters}
               multiple='true'
               onSelect={onSelect}

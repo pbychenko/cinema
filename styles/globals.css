@@ -12,6 +12,7 @@ html,
 
 .main-layout {
   padding: 24px 0;
+  /* background: colorBgContainer */
 }
 
 .pagination, footer {

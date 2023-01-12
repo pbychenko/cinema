@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import { getTrendingData } from '../api';
 import Head from 'next/head';
 import 'antd/dist/reset.css';
 import axios from "axios";

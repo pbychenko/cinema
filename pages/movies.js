@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import {UserOutlined } from '@ant-design/icons';
 import { Layout, Menu, theme, Pagination } from 'antd';
 const { Content, Footer, Sider } = Layout;
@@ -12,7 +12,7 @@ import routes from '../routes';
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // const Movies = ({genres, movies}) => {
-const Movies = ({genres}) => {
+const Movies = ({ genres }) => {
   const [page, setPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [moviesData, setMoviesData] = useState([]);

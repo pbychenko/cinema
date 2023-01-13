@@ -1,48 +1,46 @@
 import React, { useState, useEffect } from 'react';
-// import { getTrendingData } from '../api';
 import Head from 'next/head';
+import { Layout, Spin, Pagination, Alert } from 'antd';
 import 'antd/dist/reset.css';
-import axios from "axios";
 import CustomHeader from '../components/CustomHeader';
 import Cards from '../components/Cards';
-import { Layout, Spin, Pagination, Alert } from 'antd';
+import axios from "axios";
 import routes from '../routes';
 
 const { Content, Footer } = Layout;
-
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-const Home = ({data}) => {
-// const Home = () => {
+// const Home = ({ data}) => {
+const Home = () => {
   const [page, setPage] = useState(1);
-  const [trendingData, setTrendingData] = useState(data.results);
-  // const [trendingData, setTrendingData] = useState([]);
+  const [trendingData, setTrendingData] = useState([]);
   const [showLoad, setShowLoad] = useState(false);
   const [showError, setShowError] = useState(false);
+  const [totalTrendingResults, setTotalTrendingResults] = useState(0);
 
   const getTrendingData = async(pageNumber) => {
     const trendsUrl = routes.getTrendingPath(pageNumber);
     setShowLoad(true);
     try {
-      const res = await axios.get(trendsUrl); 
-      setTrendingData(() => res.data.results);
+      const res = await axios.get(trendsUrl);
+      const { results, total_results: totalResults } = res.data; 
+      setTrendingData(() => results);
+      setTotalTrendingResults(() => totalResults);
       setShowLoad(false);
       setShowError(false);
     } catch (e) {
-      console.log(e);
+      console.log('error', e);
       setShowError(true);
       setShowLoad(false);      
     }
   }
 
-  // useEffect(() => {
-  //   console.log('here')
-  //   getTrendingData(page);
-  // }, [page]);
+  useEffect(() => {
+    getTrendingData(page);
+  }, [page]);
 
   const onPaginationChange = async(current) => {
     setPage(current);
-    await getTrendingData(current);
   };
   
   return (
@@ -68,8 +66,6 @@ const Home = ({data}) => {
               message="Что пошло не так"
               description="Попробуйте перезагрузить страницу чуть позже"
               type="error"
-              // closable
-              // onClose={onClose}
             />
           ): null}
           {(!showLoad && !showError) ? (
@@ -78,7 +74,7 @@ const Home = ({data}) => {
                 <Pagination
                   current={page}
                   onChange={onPaginationChange}
-                  total={data.total_results}
+                  total={totalTrendingResults}
                   pageSize = {20}
                   className='pagination'
                   />
@@ -94,13 +90,21 @@ const Home = ({data}) => {
 
 export default Home;
 
-export async function getStaticProps() {
-  const trendsUrl = routes.getTrendingPath(1);
-  const res = await axios.get(trendsUrl);
-  const data = res.data;
-  return {
-    props: {
-      data
-    },
-  };
-}
+// export async function getStaticProps() {
+//   try {
+//     const trendsUrl = routes.getTrendingPath(1);
+//     const res = await axios.get(trensdsUrl);
+//     const {data} = res;
+//     return {
+//       props: {
+//         data
+//       },
+//     };
+//   } catch (e) {
+//     return {
+//       props: {
+//         data: []
+//       },
+//     };
+//   }
+  // }

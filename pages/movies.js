@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import {UserOutlined } from '@ant-design/icons';
-import { Layout, Menu, theme, Pagination } from 'antd';
-const { Content, Footer, Sider } = Layout;
 import Head from 'next/head';
+import { Layout, Menu, theme, Pagination } from 'antd';
+import { UserOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
-import axios from "axios";
 import CustomHeader from '../components/CustomHeader';
 import Cards from '../components/Cards';
 import routes from '../routes';
+import axios from "axios";
 
+const { Content, Footer, Sider } = Layout;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
-// const Movies = ({genres, movies}) => {
 const Movies = ({ genres }) => {
   const [page, setPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
@@ -116,12 +115,9 @@ export async function getStaticProps() {
   const res = await axios.get(genresUrl);
   const genresData = res.data.genres;
 
-  // const moviesUrl = routes.getDiscoverByGenresPath('movie', '', 1);
-  // const movies = (await axios.get(moviesUrl)).data.results;
   return {
     props: {
       genres: genresData,
-      // movies
     },
   };
 }

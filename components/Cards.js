@@ -63,7 +63,7 @@ const Cards = ({data}) => {
           lg: 32,
         }}
       >
-        {data.map((el) => (
+        {data.length > 0 ? (data.map((el) => (
         <Col className="gutter-row" span={6} key = {el.id}>
           <Card                  
             hoverable
@@ -74,7 +74,7 @@ const Cards = ({data}) => {
             <Meta title={el.title || el.name}/>
             <span>{el.media_type} {el.release_date || el.first_air_date }</span>
           </Card>
-        </Col>))}
+        </Col>))) : null}
       </Row>
       {renderModal()}
     </Content>)

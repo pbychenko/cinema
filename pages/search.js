@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
+import { Layout, Spin, Alert, Input, Tabs, Pagination } from 'antd';
+import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
-import axios from "axios";
 import CustomHeader from '../components/CustomHeader';
 import Cards from '../components/Cards';
-import { Layout, theme, Spin, Input, Tabs, Pagination } from 'antd';
+import axios from "axios";
 import routes from '../routes';
-import { AndroidOutlined, AppleOutlined } from '@ant-design/icons';
 
 const { Content, Footer } = Layout;
 const { Search } = Input;
@@ -22,50 +22,65 @@ const SearchPage = () => {
   const [totalTvResults, setTotalTvResults] = useState(0);
   const [activeTab, setActiveTab] = useState('movie');
   const [searchInput, setSearchInput] = useState('');
-  // const [load, setLoad] = useState(false);
-  // const [showError, setShowError] = useState(false);
-
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
+  const [showLoad, setShowLoad] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const onSearch = async(value) => {
     setSearchInput(() => value);
     console.log('input', searchInput);
-  }
-
-  const onTabChange = (key) => {
-    // console.log(key)
-    setActiveTab(key)
-  }
-
-  const getSearchMovieResultsData = async(pageNumber) => {
-    console.log('start Movie')
-    if (searchInput === '') return;
-    const searchMovieResultsUrl = routes.getSearchResultsPath('movie', searchInput, pageNumber);
-    const searchMovieResultsRes = await axios.get(searchMovieResultsUrl);
-    setSearchResultsMovieData(() => searchMovieResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
-    setTotalMovieResults(searchMovieResultsRes.data.total_results);
-    console.log('stop')
-  }
-
-  const getSearchTvResultsData = async(pageNumber) => {
-    console.log('start')
-    if (searchInput === '') return;
-    const searchTvResultsUrl = routes.getSearchResultsPath('tv', searchInput, pageNumber);
-    const searchTvResultsRes = await axios.get(searchTvResultsUrl); 
-    setSearchResultsTvData(() => searchTvResultsRes.data.results.map((el) => ({ ...el, 'media_type': 'tv' })));
-    setTotalTvResults(searchTvResultsRes.data.total_results);
-    console.log('stop') 
   };
 
+  const onTabChange = (key) => {
+    setActiveTab(key);
+  }; 
+
   useEffect(() => {
-    getSearchMovieResultsData(moviePage)
+    const getSearchMovieResultsData = async(pageNumber) => {
+      console.log('start Movie')
+      if (searchInput === '') return;
+  
+      const searchMovieResultsUrl = routes.getSearchResultsPath('movie', searchInput, pageNumber);
+      setShowLoad(true);
+      try {
+        const res = await axios.get(searchMovieResultsUrl);
+        const { results, total_results: totalResults } = res.data;
+        setSearchResultsMovieData(() => results.map((el) => ({ ...el, 'media_type': 'movie' })));
+        setTotalMovieResults(() => totalResults);
+        setShowLoad(false);
+        setShowError(false);
+      } catch (e) {
+        console.log('error', e);
+        setShowError(true);
+        setShowLoad(false);      
+      }    
+      console.log('stop')
+    };
+
+    getSearchMovieResultsData(moviePage);
     console.log('in useef1')
   }, [searchInput, moviePage]);
 
   useEffect(() => {
+    const getSearchTvResultsData = async(pageNumber) => {
+      console.log('start tv search')
+      if (searchInput === '') return;
+    
+      const searchTvResultsUrl = routes.getSearchResultsPath('tv', searchInput, pageNumber);
+      setShowLoad(true);
+      try {
+        const res = await axios.get(searchTvResultsUrl);
+        const { results, total_results: totalResults } = res.data;
+        setSearchResultsTvData(() => results.map((el) => ({ ...el, 'media_type': 'tv' })));
+        setTotalTvResults(() => totalResults);
+        setShowLoad(false);
+        setShowError(false);
+      } catch (e) {
+        console.log('error', e);
+        setShowError(true);
+        setShowLoad(false);      
+      }    
+      console.log('stop tv');
+    };
     getSearchTvResultsData(tvPage)
     console.log('in useef2')
   }, [searchInput, tvPage]);
@@ -87,9 +102,6 @@ const SearchPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <CustomHeader />
-      {/* <Spin tip="Loading" size="large">
-        <div className="content" />
-      </Spin> */}
        <Content
         className='main-content'
       >
@@ -111,27 +123,56 @@ const SearchPage = () => {
                 key: 'movie',
                 children: (
                  <>
-                  <Cards data={searchResultsMovieData} />
-                  <Pagination
-                    current={moviePage}
-                    onChange={onMoviePaginationChange}
-                    total={totalMovieResults}
-                    pageSize = {20}
-                    className='pagination' />
-                 </>),
+                  {(showLoad && !showError) ? (
+                    <Spin tip="Loading" size="large">
+                      <div className="content" />
+                    </Spin>): null}
+                  {(!showLoad && showError) ? (
+                    <Alert
+                      message="Что пошло не так"
+                      description="Попробуйте перезагрузить страницу чуть позже"
+                      type="error"
+                    />
+                  ): null}
+                  {(!showLoad && !showError) ? (
+                    <>
+                      <Cards data={searchResultsMovieData} />
+                      <Pagination
+                          current={moviePage}
+                          onChange={onMoviePaginationChange}
+                          total={totalMovieResults}
+                          pageSize = {20}
+                          className='pagination' />
+                    </>): null}
+                 </> 
+                 ),
               },
               {
                 label: (<span><AndroidOutlined />TV</span>),
                 key: 'tv',
                 children: (
                   <>
-                  <Cards data={searchResultsTvData} />
-                  <Pagination
-                    current={tvPage}
-                    onChange={onTvPaginationChange}
-                    total={totalTvResults}
-                    pageSize = {20}
-                    className='pagination' />
+                    {(showLoad && !showError) ? (
+                      <Spin tip="Loading" size="large">
+                        <div className="content" />
+                      </Spin>): null}
+                    {(!showLoad && showError) ? (
+                      <Alert
+                        message="Что пошло не так"
+                        description="Попробуйте перезагрузить страницу чуть позже"
+                        type="error"
+                      />
+                    ): null}
+                    {(!showLoad && !showError) ? (
+                      <>
+                        <Cards data={searchResultsTvData} />
+                        <Pagination
+                            current={tvPage}
+                            onChange={onTvPaginationChange}
+                            total={totalTvResults}
+                            pageSize = {20}
+                            className='pagination' />
+                      </>): null}
                   </>),
               }]}
           />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { Layout, Menu, theme, Pagination } from 'antd';
+import { Layout, Menu, theme, Pagination, Spin, Alert } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import 'antd/dist/reset.css';
 import CustomHeader from '../components/CustomHeader';
@@ -15,7 +15,9 @@ const Movies = ({ genres }) => {
   const [page, setPage] = useState(1);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [moviesData, setMoviesData] = useState([]);
-  const [totalMoviesResult, setTotalMoviesResult] = useState(0)
+  const [totalMoviesResult, setTotalMoviesResult] = useState(0);
+  const [showLoad, setShowLoad] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const filters = [UserOutlined].map((icon, index) => {
     return {
@@ -25,16 +27,6 @@ const Movies = ({ genres }) => {
       children: genres.map((el) => ({ key: el.id, label: el.name })),
     };
   });
-
-  const getMoviesData = async(pageNumber) => {
-    console.log('in get', selectedGenres.toString())
-    const moviesUrl = routes.getDiscoverByGenresPath('movie', selectedGenres.toString(), pageNumber);
-    const res = await axios.get(moviesUrl);
-    // console.log(res)
-    setMoviesData(() => res.data.results.map((el) => ({ ...el, 'media_type': 'movie' })));
-    console.log(res.data.total_results)
-    setTotalMoviesResult(res.data.total_results);
-  }
   
   const {
     token: { colorBgContainer },
@@ -56,8 +48,24 @@ const Movies = ({ genres }) => {
   };
 
   useEffect(() => {
-    getMoviesData(page)
-    console.log('in movies', moviesData)
+    const getMoviesData = async(pageNumber) => {
+      const moviesUrl = routes.getDiscoverByGenresPath('movie', selectedGenres.toString(), pageNumber);
+      setShowLoad(true);
+      try {
+        const res = await axios.get(moviesUrl);
+        const { results, total_results: totalResults } = res.data;
+        setMoviesData(() => results.map((el) => ({ ...el, media_type: 'movie' })));
+        setTotalMoviesResult(() => totalResults);
+        setShowLoad(false);
+        setShowError(false);
+      } catch (e) {
+        console.log('error', e);
+        setShowError(true);
+        setShowLoad(false);
+      }    
+    }    
+    getMoviesData(page);
+    console.log('in movies data');
   }, [selectedGenres, page]);
 
   return (
@@ -91,14 +99,27 @@ const Movies = ({ genres }) => {
             />
           </Sider>
           <Content>
-            {/* {moviesData ? (<Cards data={moviesData} onPaginationChange={onPaginationChange} page={page} /> ) : null} */}
-            <Cards data={moviesData} />
-            <Pagination
-              current={page}
-              onChange={onPaginationChange}
-              total={totalMoviesResult}
-              pageSize = {20}
-              className='pagination' />                       
+            {(showLoad && !showError) ? (
+            <Spin tip="Loading" size="large">
+              <div className="content" />
+            </Spin>): null}
+            {(!showLoad && showError) ? (
+              <Alert
+                message="Что пошло не так"
+                description="Попробуйте перезагрузить страницу чуть позже"
+                type="error"
+              />
+            ): null}
+            {(!showLoad && !showError) ? (
+              <>
+                <Cards data={moviesData} />
+                <Pagination
+                    current={page}
+                    onChange={onPaginationChange}
+                    total={totalMoviesResult}
+                    pageSize = {20}
+                    className='pagination' />
+              </>): null}
           </Content>
         </Layout>
       </Content>
@@ -112,13 +133,22 @@ export default Movies;
 
 export async function getStaticProps() {
   const genresUrl = routes.getGenresPath('movie');
-  const res = await axios.get(genresUrl);
-  const genresData = res.data.genres;
+  try {
+    const res = await axios.get(genresUrl);
+    const genresData = res.data.genres;
 
-  return {
-    props: {
-      genres: genresData,
-    },
-  };
+    return {
+      props: {
+        genres: genresData,
+      },
+    };
+  } catch (e) {
+    console.log(e);
+    return {
+      props: {
+        genres: [],
+      },
+    };
+  }  
 }
 

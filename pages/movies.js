@@ -49,6 +49,7 @@ const Movies = ({ genres }) => {
 
   useEffect(() => {
     const getMoviesData = async(pageNumber) => {
+      console.log('getMoviesData')
       const moviesUrl = routes.getDiscoverByGenresPath('movie', selectedGenres.toString(), pageNumber);
       setShowLoad(true);
       try {
@@ -65,7 +66,7 @@ const Movies = ({ genres }) => {
       }    
     }    
     getMoviesData(page);
-    console.log('in movies data');
+    // console.log('in movies data');
   }, [selectedGenres, page]);
 
   return (

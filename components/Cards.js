@@ -1,4 +1,4 @@
-import { Layout, Row, Col, Card, Pagination } from 'antd';
+import { Layout, Row, Col, Card, Spin, Alert } from 'antd';
 import Image from 'next/image';
 import routes from '../routes';
 import ShowDetailsModal from './ShowDetailsModal';
@@ -10,41 +10,71 @@ import React, { useState, useEffect } from 'react';
 const { Meta } = Card;
 const { Content } = Layout;
 
-const Cards = ({data}) => {
+const Cards = ({ data }) => {
   const [activeItemData, setActiveItemData] = useState(null);
   const [showModal, setShowModal] = useState(false);
+  const [showLoad, setShowLoad] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const openCard = async (id) => {
-    console.log(id)
+    // console.log(id)
     let mediaObj = data.filter((el) => el.id === id)[0];
     const videosUrl = routes.getVideosPath(mediaObj.media_type, id);
     const acrotrsUrl = routes.getActorsPath(mediaObj.media_type, id);
-    const videoRes = await axios.get(videosUrl);
-    const actorsRes = await axios.get(acrotrsUrl);
-    const videoLink = videoRes.data.results[0].key;
-    const acrotrsData = actorsRes.data.cast.slice(0, 10);
-    mediaObj = { ...mediaObj, videoLink, acrotrsData };
-    console.log(mediaObj)
-
-    setActiveItemData(mediaObj);
-    // try {
-      // const res = await axios.get(uri);
-      // setActivePictureData(res.data);
-      setShowModal(true);
-    // } catch (error) {
-    //   setShowErrorBlock(true);
-    //   throw error;
-    // }
+  
+    setShowLoad(true);    
+    try {
+      const videoRes = await axios.get(videosUrl);
+      const actorsRes = await axios.get(acrotrsUrl);
+      const { results: videoResults } = videoRes.data;
+      const { cast: actorsResults } = actorsRes.data;
+      const videoLink = videoResults[0].key;
+      const actorsData = actorsResults.slice(0, 10);
+      mediaObj = { ...mediaObj, videoLink, actorsData };
+      // console.log(mediaObj);
+      setActiveItemData(mediaObj);
+      setShowLoad(false);
+      setShowError(false);
+      setShowModal(true);      
+    } catch (e) {
+      console.log('error', e);
+      setShowError(true);
+      setShowLoad(false);
+    }
   };
 
   const handleClick = (id) => () => openCard(id);
 
   const renderModal = () => (
-    activeItemData && <ShowDetailsModal
+    // <>
+    //   {(showLoad && !showError) ? (
+    //   <Spin tip="Loading" size="large">
+    //     <div className="content" />
+    //   </Spin>): null}
+    // {(!showLoad && showError) ? (
+    //   <Alert
+    //     message="Что пошло не так"
+    //     description="Попробуйте перезагрузить страницу чуть позже"
+    //     type="error"
+    //   />
+    // ): null}
+    // {(!showLoad && !showError) ? (
+    //   activeItemData && <ShowDetailsModal
+    //     open={showModal}
+    //     data={activeItemData}
+    //     onCancel={handleCloseModal}
+    //   />): null}
+    // </>
+    
+    activeItemData && 
+    <ShowDetailsModal
       open={showModal}
       data={activeItemData}
       onCancel={handleCloseModal}
-  />);
+      showLoad={showLoad}
+      showError={showError}
+  />
+  );
   
   const handleCloseModal = () => {
     setShowModal(false);

@@ -42,6 +42,7 @@ const ShowDetailsModal = ({ open, onCancel, data }) => {
         const actorsRes = await axios.get(acrotrsUrl);
         const { results: videoResults } = videoRes.data;
         const { cast: actorsResults } = actorsRes.data;
+        console.log('videoResults[0]', videoResults[0])
         const videoLink = videoResults[0].key;
         const actorsData = actorsResults.slice(0, 10);
         setModalData((prev) => ({ ...prev, videoLink, actorsData }));

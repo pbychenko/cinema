@@ -11,7 +11,7 @@ import axios from "axios";
 // const Arrow = ({ type, style, className, onClick }) => (
 //   <Icon type={type} style={style} className={className} onClick={onClick} />
 // );
-const { Meta } = Card;
+// const { Meta } = Card;
 
 const { Content } = Layout;
 const carouselSettings = {
@@ -26,13 +26,13 @@ const carouselSettings = {
 };
 
 const ShowDetailsModal = ({ open, onCancel, data }) => {
-  const [showLoad, setShowLoad] = useState(false);
-  const [showError, setShowError] = useState(false);
   const [modalData, setModalData] = useState(data);
+  const [showLoad, setShowLoad] = useState(false);
+  const [showError, setShowError] = useState(false);  
 
   useEffect(() => {    
     const getData = async () => {
-      console.log('getData')
+      // console.log('getData')
       const { id } = modalData;
       const videosUrl = routes.getVideosPath(modalData.media_type, id);
       const acrotrsUrl = routes.getActorsPath(modalData.media_type, id);    
@@ -74,41 +74,30 @@ const ShowDetailsModal = ({ open, onCancel, data }) => {
                 <Col className="gutter-row" span={16}>
                     <h1>{data.title || data.name}</h1>
                     <p>{data.overview}</p>
-                    <Link href={routes.getVideoLinkPath(data.videoLink)} target="_blank">Watch Trailer</Link>                    
-                      {(showLoad && !showError) ? (
-                      <Spin tip="Loading" size="large">
-                        {/* <div className="content" /> */}
-                      </Spin>): null}
-                      {(!showLoad && showError) ? (
+                    {/* <Link href={routes.getVideoLinkPath(data.videoLink)} target="_blank">Watch Trailer</Link>                     */}
+                       {(!showLoad && showError) ? (
                         <Alert
                           message="Что пошло не так"
                           description="Попробуйте перезагрузить страницу чуть позже"
                           type="error"
                         />): null}
-                        <Carousel
-                          {...carouselSettings}
-                            // prevArrow={<Button transparentclassName="ant-carousel slick-prev"><Image src={`${baseImagePath}${data.poster_path}`} alt="Vercel Logo" width={15} height={15} /></Button>}
-                            // nextArrow={<Icon className="ant-carousel slick-next" style={style}><RightOutlined /></Icon>}
-                        >
-                          {(!showLoad && !showError && modalData.actorsData) ? modalData.actorsData.map((el) => (
-                          <Card
-                            key={el.id}
-                            hoverable
-                            className={styles.card}
-                            cover={<Image src={routes.getImagePath(200, el.profile_path)} alt="Vercel Logo" width={150} height={200}/>}
-                          >                  
-                            <p> {el.name}</p>
-                          </Card>)): null}
-                    {/* {modalData.actorsData ? modalData.actorsData.map((el) => (
-                      <Card
-                        key={el.id}
-                        hoverable
-                        className={styles.card}
-                        cover={<Image src={routes.getImagePath(200, el.profile_path)} alt="Vercel Logo" width={150} height={200}/>}
-                      >                  
-                        <p> {el.name}</p>
-                      </Card>)): null} */}
-                    </Carousel>
+                        {modalData.videoLink ? (<Link href={routes.getVideoLinkPath(modalData.videoLink)} target="_blank">Watch Trailer</Link> ): null}
+                        {modalData.actorsData ? (                         
+                          <Carousel
+                            {...carouselSettings}
+                              // prevArrow={<Button transparentclassName="ant-carousel slick-prev"><Image src={`${baseImagePath}${data.poster_path}`} alt="Vercel Logo" width={15} height={15} /></Button>}
+                              // nextArrow={<Icon className="ant-carousel slick-next" style={style}><RightOutlined /></Icon>}
+                          >
+                            {modalData.actorsData.map((el) => (
+                            <Card
+                              key={el.id}
+                              hoverable
+                              className={styles.card}
+                              cover={<Image src={routes.getImagePath(200, el.profile_path)} alt="Vercel Logo" width={150} height={200}/>}
+                            >                  
+                              <p> {el.name}</p>
+                            </Card>))}
+                          </Carousel>): null}
                 </Col>
              </Row>          
         </Content>

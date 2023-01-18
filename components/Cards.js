@@ -1,11 +1,10 @@
-import { Layout, Row, Col, Card, Spin, Alert } from 'antd';
+import { Layout, Row, Col, Card } from 'antd';
 import Image from 'next/image';
 import routes from '../routes';
 import ShowDetailsModal from './ShowDetailsModal';
-import axios from "axios";
 import styles from './Cards.module.css';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const { Meta } = Card;
 const { Content } = Layout;
@@ -16,21 +15,8 @@ const Cards = ({ data }) => {
 
   const openCard = async (id) => {
     let mediaObj = data.filter((el) => el.id === id)[0];
-    // const videosUrl = routes.getVideosPath(mediaObj.media_type, id);
-    // const acrotrsUrl = routes.getActorsPath(mediaObj.media_type, id);
-  
-    // setShowLoad(true);    
-    // try {
-    //   const videoRes = await axios.get(videosUrl);
-    //   const actorsRes = await axios.get(acrotrsUrl);
-    //   const { results: videoResults } = videoRes.data;
-    //   const { cast: actorsResults } = actorsRes.data;
-    //   const videoLink = videoResults[0].key;
-    //   const actorsData = actorsResults.slice(0, 10);
-    //   mediaObj = { ...mediaObj, videoLink, actorsData };
-    //   // console.log(mediaObj);
-      setActiveItemData(mediaObj);
-      setShowModal(true);
+    setActiveItemData(mediaObj);
+    setShowModal(true);
   };
 
   const handleClick = (id) => () => openCard(id);

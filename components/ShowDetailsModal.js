@@ -1,4 +1,4 @@
-import { Modal, Layout, Row, Col, Spin, Alert } from 'antd';
+import { Modal, Layout, Row, Col, Alert } from 'antd';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Carousel, Card } from "antd";
@@ -18,11 +18,12 @@ const carouselSettings = {
   // arrows: true,
   swipeToSlide: true,
   draggable: true,
-  slidesToShow: 3,
-  slidesToScroll: 1,
-  variableWidth: true, 
-  autoplay: true,
-  autoplaySpeed: 1000
+  // slidesToShow: 2,
+  // slidesToScroll: 1,
+  variableWidth: true,
+  infinite: false 
+  // autoplay: true,
+  // autoplaySpeed: 1000
 };
 
 const ShowDetailsModal = ({ open, onCancel, data }) => {
@@ -32,7 +33,6 @@ const ShowDetailsModal = ({ open, onCancel, data }) => {
 
   useEffect(() => {    
     const getData = async () => {
-      // console.log('getData')
       const { id } = modalData;
       const videosUrl = routes.getVideosPath(modalData.media_type, id);
       const acrotrsUrl = routes.getActorsPath(modalData.media_type, id);    
@@ -42,9 +42,8 @@ const ShowDetailsModal = ({ open, onCancel, data }) => {
         const actorsRes = await axios.get(acrotrsUrl);
         const { results: videoResults } = videoRes.data;
         const { cast: actorsResults } = actorsRes.data;
-        console.log('videoResults[0]', videoResults[0])
-        const videoLink = videoResults[0].key;
-        const actorsData = actorsResults.slice(0, 10);
+        const videoLink = videoResults.length ? videoResults[0].key : null;
+        const actorsData = actorsResults;
         setModalData((prev) => ({ ...prev, videoLink, actorsData }));
         setShowLoad(false);
         setShowError(false);     
@@ -90,14 +89,15 @@ const ShowDetailsModal = ({ open, onCancel, data }) => {
                               // nextArrow={<Icon className="ant-carousel slick-next" style={style}><RightOutlined /></Icon>}
                           >
                             {modalData.actorsData.map((el) => (
-                            <Card
-                              key={el.id}
-                              hoverable
-                              className={styles.card}
-                              cover={<Image src={routes.getImagePath(200, el.profile_path)} alt="Vercel Logo" width={150} height={200}/>}
-                            >                  
-                              <p> {el.name}</p>
-                            </Card>))}
+                              <Card
+                                key={el.id}
+                                hoverable
+                                className={styles.card}
+                                cover={<Image src={el.profile_path ? routes.getImagePath(200, el.profile_path): '/no-img.jpg'}
+                                alt="Vercel Logo" width={150} height={200}/>}
+                              >                  
+                                <p> {el.name}</p>
+                              </Card>))}
                           </Carousel>): null}
                 </Col>
              </Row>          

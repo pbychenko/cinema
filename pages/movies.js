@@ -36,15 +36,18 @@ const Movies = ({ genres }) => {
   const onSelect = async(e) => {
     const newSelectedGenres = [...selectedGenres, e.key]
     setSelectedGenres(newSelectedGenres);
+    localStorage.setItem('movies_page', 1);
   }
 
   const onDeselect = async(e) => {
     const newSelectedGenres = selectedGenres.filter((el) => el !== e.key)
     setSelectedGenres(newSelectedGenres);
+    localStorage.setItem('movies_page', 1);
   }
 
   const onPaginationChange = async(current) => {
-    setPage(current);
+    localStorage.setItem('movies_page', current);
+    setPage(current);    
   };
 
   useEffect(() => {
@@ -66,6 +69,8 @@ const Movies = ({ genres }) => {
       }    
     }    
     getMoviesData(page);
+    const movies_page = localStorage.getItem('movies_page') ?? 1;
+    setPage(+movies_page);
     // console.log('in movies data');
   }, [selectedGenres, page]);
 

@@ -34,15 +34,18 @@ const Home = () => {
       setShowLoad(false);      
     }
   }
-
+  
   useEffect(() => {
+    const index_page = localStorage.getItem('index_page') ?? 1;
+    setPage(+index_page);
     getTrendingData(page);
   }, [page]);
 
   const onPaginationChange = async(current) => {
     setPage(current);
+    localStorage.setItem('index_page', current);
   };
-  
+
   return (
     <Layout>
       <Head>

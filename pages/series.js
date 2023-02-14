@@ -37,14 +37,17 @@ const Series = ({ genres }) => {
   const onSelect = async(e) => {
     const newSelectedGenres = [...selectedGenres, e.key]
     setSelectedGenres(newSelectedGenres);
+    localStorage.setItem('series_page', 1);
   }
 
   const onDeselect = async(e) => {
     const newSelectedGenres = selectedGenres.filter((el) => el !== e.key)
     setSelectedGenres(newSelectedGenres);
+    localStorage.setItem('series_page', 1);
   }
 
   const onPaginationChange = async(current) => {
+    localStorage.setItem('series_page', current);
     setPage(current);
   };
 
@@ -64,7 +67,9 @@ const Series = ({ genres }) => {
         setShowError(true);
         setShowLoad(false);
       }    
-    }
+    };
+    const series_page = localStorage.getItem('series_page') ?? 1;
+    setPage(+series_page);
     getTvData(page);
   }, [selectedGenres, page]);
 

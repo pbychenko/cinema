@@ -13,14 +13,14 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // const Series = ({genres, movies}) => {
 const Series = ({ genres }) => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [tvData, setTvData] = useState([]);
   const [showLoad, setShowLoad] = useState(false);
   const [showError, setShowError] = useState(false);
   const [totalResults, setTotalResults] = useState(0);
   
-  const filters = [UserOutlined].map((icon, index) => {
+  const filters = [UserOutlined].map((icon) => {
     return {
       key: `genres`,
       icon: React.createElement(icon),
@@ -37,12 +37,14 @@ const Series = ({ genres }) => {
   const onSelect = async(e) => {
     const newSelectedGenres = [...selectedGenres, e.key]
     setSelectedGenres(newSelectedGenres);
+    setPage(1);
     localStorage.setItem('series_page', 1);
   }
 
   const onDeselect = async(e) => {
     const newSelectedGenres = selectedGenres.filter((el) => el !== e.key)
     setSelectedGenres(newSelectedGenres);
+    setPage(1);
     localStorage.setItem('series_page', 1);
   }
 
@@ -70,7 +72,9 @@ const Series = ({ genres }) => {
     };
     const series_page = localStorage.getItem('series_page') ?? 1;
     setPage(+series_page);
-    getTvData(page);
+    if (page) {
+      getTvData(page);
+    }    
   }, [selectedGenres, page]);
 
   return (

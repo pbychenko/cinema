@@ -12,14 +12,14 @@ const { Content, Footer, Sider } = Layout;
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 const Movies = ({ genres }) => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
   const [selectedGenres, setSelectedGenres] = useState([]);
   const [moviesData, setMoviesData] = useState([]);
   const [totalMoviesResult, setTotalMoviesResult] = useState(0);
   const [showLoad, setShowLoad] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const filters = [UserOutlined].map((icon, index) => {
+  const filters = [UserOutlined].map((icon) => {
     return {
       key: `genres`,
       icon: React.createElement(icon),
@@ -31,11 +31,11 @@ const Movies = ({ genres }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
-
   
   const onSelect = async(e) => {
     const newSelectedGenres = [...selectedGenres, e.key]
     setSelectedGenres(newSelectedGenres);
+    setPage(1);
     localStorage.setItem('movies_page', 1);
   }
 
@@ -43,6 +43,7 @@ const Movies = ({ genres }) => {
     const newSelectedGenres = selectedGenres.filter((el) => el !== e.key)
     setSelectedGenres(newSelectedGenres);
     localStorage.setItem('movies_page', 1);
+    setPage(1);
   }
 
   const onPaginationChange = async(current) => {
@@ -66,11 +67,16 @@ const Movies = ({ genres }) => {
         console.log('error', e);
         setShowError(true);
         setShowLoad(false);
-      }    
-    }    
-    getMoviesData(page);
+      }
+    };
+    
     const movies_page = localStorage.getItem('movies_page') ?? 1;
     setPage(+movies_page);
+    
+    if (page) {
+      getMoviesData(page);
+    }
+    
     // console.log('in movies data');
   }, [selectedGenres, page]);
 

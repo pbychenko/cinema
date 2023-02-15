@@ -12,7 +12,7 @@ process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
 // const Home = ({ data}) => {
 const Home = () => {
-  const [page, setPage] = useState(1);
+  const [page, setPage] = useState(null);
   const [trendingData, setTrendingData] = useState([]);
   const [showLoad, setShowLoad] = useState(false);
   const [showError, setShowError] = useState(false);
@@ -34,11 +34,14 @@ const Home = () => {
       setShowLoad(false);      
     }
   }
-  
+
   useEffect(() => {
     const index_page = localStorage.getItem('index_page') ?? 1;
-    setPage(+index_page);
-    getTrendingData(page);
+    setPage(()=> +index_page);
+    if (page) {
+      getTrendingData(page);
+    }
+    
   }, [page]);
 
   const onPaginationChange = async(current) => {
